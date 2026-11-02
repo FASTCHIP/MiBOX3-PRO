@@ -1,6 +1,9 @@
 release.keystore
 *.keystore
 unsigned.apk
+unsigned.apk.idsig
+build/
+dist/
 classes.dex
 dd.txt
 apktool.db
