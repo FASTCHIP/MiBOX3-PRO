@@ -38,13 +38,7 @@
 
     iput-object v0, p0, Lru/neftreserv/miboxadb/MainActivity;->mText:Landroid/widget/TextView;
 
-    invoke-direct {p0}, Lru/neftreserv/miboxadb/MainActivity;->diag()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-virtual {v0, v1}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
-
-    invoke-direct {p0, v1}, Lru/neftreserv/miboxadb/MainActivity;->log(Ljava/lang/String;)V
+    invoke-direct {p0}, Lru/neftreserv/miboxadb/MainActivity;->render()V
 
     invoke-virtual {p0, v0}, Landroid/app/Activity;->setContentView(Landroid/view/View;)V
 
@@ -68,11 +62,7 @@
 
     if-eqz v0, :cond_ret
 
-    invoke-direct {p0}, Lru/neftreserv/miboxadb/MainActivity;->diag()Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-virtual {v0, v1}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
+    invoke-direct {p0}, Lru/neftreserv/miboxadb/MainActivity;->render()V
 
     :cond_ret
     return-void
@@ -104,7 +94,7 @@
 
     invoke-direct {p0, v1, v0}, Lru/neftreserv/miboxadb/MainActivity;->status(Ljava/lang/String;I)V
 
-    if-nez v0, :cond_go
+    if-eqz v0, :cond_go
 
     const-string v1, "\u043d\u0435\u0442 root \u2014 \u043d\u0430\u0436\u043c\u0438 \u041f\u0420\u0415\u0414\u041e\u0421\u0422\u0410\u0412\u0418\u0422\u042c \u043d\u0430 \u0442\u0435\u043b\u0435\u0432\u0438\u0437\u043e\u0440\u0435"
 
@@ -112,7 +102,7 @@
 
     iget v0, p0, Lru/neftreserv/miboxadb/MainActivity;->mTried:I
 
-    const/4 v1, 0x2
+    const/4 v1, 0x6
 
     if-ge v0, v1, :cond_ret
 
@@ -162,39 +152,7 @@
 
     invoke-direct {p0, v1, v0}, Lru/neftreserv/miboxadb/MainActivity;->status(Ljava/lang/String;I)V
 
-    new-instance v0, Ljava/lang/StringBuilder;
-
-    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v1, "IP: wlan0="
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;
-
-    const-string v1, "dhcp.wlan0.ipaddress"
-
-    invoke-direct {p0, v1}, Lru/neftreserv/miboxadb/MainActivity;->prop(Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;
-
-    const-string v1, "  eth0="
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;
-
-    const-string v1, "dhcp.eth0.ipaddress"
-
-    invoke-direct {p0, v1}, Lru/neftreserv/miboxadb/MainActivity;->prop(Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v1
-
-    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;
-
-    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v0
-
-    invoke-direct {p0, v0}, Lru/neftreserv/miboxadb/MainActivity;->line(Ljava/lang/String;)V
+    invoke-direct {p0}, Lru/neftreserv/miboxadb/MainActivity;->refresh()V
 
     return-void
 .end method
@@ -366,6 +324,105 @@
     return-void
 .end method
 
+.method private version()Ljava/lang/String;
+    .registers 4
+
+    :try_start_0
+    invoke-virtual {p0}, Landroid/app/Activity;->getPackageName()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-virtual {p0}, Landroid/app/Activity;->getPackageManager()Landroid/content/pm/PackageManager;
+
+    move-result-object v1
+
+    const/4 v2, 0x0
+
+    invoke-virtual {v1, v0, v2}, Landroid/content/pm/PackageManager;->getPackageInfo(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;
+
+    move-result-object v0
+
+    iget-object v0, v0, Landroid/content/pm/PackageInfo;->versionName:Ljava/lang/String;
+
+    return-object v0
+    :try_end_0
+    .catch Ljava/lang/Throwable; {:try_start_0 .. :try_end_0} :cond_fail
+
+    :cond_fail
+    const-string v0, "?"
+
+    return-object v0
+.end method
+
+.method private refresh()V
+    .registers 4
+
+    iget-object v0, p0, Lru/neftreserv/miboxadb/MainActivity;->mText:Landroid/widget/TextView;
+
+    if-eqz v0, :cond_ret
+
+    invoke-direct {p0}, Lru/neftreserv/miboxadb/MainActivity;->render()V
+
+    :cond_ret
+    return-void
+.end method
+
+.method private render()V
+    .registers 9
+
+    iget-object v0, p0, Lru/neftreserv/miboxadb/MainActivity;->mText:Landroid/widget/TextView;
+
+    if-eqz v0, :cond_ret
+
+    invoke-direct {p0}, Lru/neftreserv/miboxadb/MainActivity;->diag()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-direct {p0, v1}, Lru/neftreserv/miboxadb/MainActivity;->log(Ljava/lang/String;)V
+
+    const-string v2, "\n\n\u0430\u0432\u0442\u043e\u0440:"
+
+    invoke-virtual {v1, v2}, Ljava/lang/String;->indexOf(Ljava/lang/String;)I
+
+    move-result v2
+
+    if-ltz v2, :cond_plain
+
+    new-instance v3, Landroid/text/SpannableString;
+
+    invoke-direct {v3, v1}, Landroid/text/SpannableString;-><init>(Ljava/lang/CharSequence;)V
+
+    new-instance v4, Landroid/text/style/RelativeSizeSpan;
+
+    const/high16 v5, 0x3f190000
+
+    invoke-direct {v4, v5}, Landroid/text/style/RelativeSizeSpan;-><init>(F)V
+
+    new-instance v5, Landroid/text/style/ForegroundColorSpan;
+
+    const v6, -0x777778
+
+    invoke-direct {v5, v6}, Landroid/text/style/ForegroundColorSpan;-><init>(I)V
+
+    invoke-virtual {v1}, Ljava/lang/String;->length()I
+
+    move-result v6
+
+    const/16 v7, 0x11
+
+    invoke-interface {v3, v4, v2, v6, v7}, Landroid/text/Spannable;->setSpan(Ljava/lang/Object;III)V
+
+    invoke-interface {v3, v5, v2, v6, v7}, Landroid/text/Spannable;->setSpan(Ljava/lang/Object;III)V
+
+    move-object v1, v3
+
+    :cond_plain
+    invoke-virtual {v0, v1}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
+
+    :cond_ret
+    return-void
+.end method
+
 .method private diag()Ljava/lang/String;
     .registers 4
 
@@ -373,7 +430,17 @@
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
 
-    const-string v1, "MiBox ADB 1.0\n\u0442\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044f root (Patchwall). \u041f\u043e\u0441\u043b\u0435 \u0437\u0430\u043f\u0443\u0441\u043a\u0430 \u043f\u0440\u0438\u0441\u0442\u0430\u0432\u043a\u0430 \u0436\u0434\u0451\u0442 adb \u043d\u0430 \u043f\u043e\u0440\u0442\u0443 5555 \u0438 \u043f\u043e\u0441\u043b\u0435 \u043f\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0438.\nMODEL="
+    const-string v1, "MiBox ADB "
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;
+
+    invoke-direct {p0}, Lru/neftreserv/miboxadb/MainActivity;->version()Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;
+
+    const-string v1, "\n\u0442\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044f root (Patchwall). \u041f\u043e\u0441\u043b\u0435 \u0437\u0430\u043f\u0443\u0441\u043a\u0430 \u043f\u0440\u0438\u0441\u0442\u0430\u0432\u043a\u0430 \u0436\u0434\u0451\u0442 adb \u043d\u0430 \u043f\u043e\u0440\u0442\u0443 5555 \u0438 \u043f\u043e\u0441\u043b\u0435 \u043f\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0438.\nMODEL="
 
     invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;
 
@@ -437,6 +504,29 @@
 
     invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;
 
+    const-string v1, "\nIP wlan0="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;
+    const-string v1, "dhcp.wlan0.ipaddress"
+
+    invoke-direct {p0, v1}, Lru/neftreserv/miboxadb/MainActivity;->prop(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;
+    const-string v1, " / eth0="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;
+    const-string v1, "dhcp.eth0.ipaddress"
+
+    invoke-direct {p0, v1}, Lru/neftreserv/miboxadb/MainActivity;->prop(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;
+    const-string v1, "\n\n\u0430\u0432\u0442\u043e\u0440: FASTCHIP (github.com/FASTCHIP)"
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/CharSequence;)Ljava/lang/StringBuilder;
     invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
     move-result-object v0

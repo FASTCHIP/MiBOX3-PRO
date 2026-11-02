@@ -10,8 +10,8 @@ sdkInfo:
 packageInfo:
   forcedPackageId: 127
 versionInfo:
-  versionCode: 2
-  versionName: '1.1'
+  versionCode: 7
+  versionName: '1.6'
 sharedLibrary: false
 sparseResources: false
 unknownFiles: {}
